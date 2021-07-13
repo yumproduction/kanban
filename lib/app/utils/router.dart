@@ -33,7 +33,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {
     case '/':
       return MaterialPageRoute<dynamic>(
-        builder: (context) => MainScreen(),
+        builder: (context) => LoginScreen(),
       );
       break;
     // case balanceFillRoute:
@@ -42,7 +42,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     //   );
     default:
       return MaterialPageRoute<dynamic>(
-        builder: (context) => MainScreen(),
+        builder: (context) => LoginScreen(),
       );
   }
 }

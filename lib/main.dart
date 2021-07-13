@@ -7,7 +7,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kanban/app/app.dart';
-import 'package:kanban/repositories/service_locator.dart';
+import 'package:kanban/repositories/auth/auth_repository_impl.dart';
+import 'package:kanban/repositories/data/service_locator.dart';
+import 'package:kanban/repositories/data/sharedpref_data_source.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 //ignore_for_file:avoid_renaming_method_parameters
@@ -35,7 +37,15 @@ Future<void> main() async {
       builder: (context2) => RepositoryProvider(
         create: (context) => DioSettings(),
         child: Builder(
-          builder: (context3) => App(),
+          builder: (context2) => RepositoryProvider(
+            create: (context) => DioSettings(),
+            child: Builder(
+              builder: (context3) => App(
+                dataSource: DbDataSourceImpl(shp),
+                authRepository: AuthRepositoryImp(DbDataSourceImpl(shp)),
+              ),
+            ),
+          ),
         ),
       ),
     ),

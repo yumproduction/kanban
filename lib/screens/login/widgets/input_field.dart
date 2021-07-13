@@ -25,65 +25,68 @@ class InputFieldComponent extends StatefulWidget {
 }
 
 class _InputFieldComponentState extends State<InputFieldComponent> {
-  FocusNode focusNode = FocusNode();
+  late FocusNode focusNode;
+  late TextEditingController controller;
   bool focused = false;
 
   @override
   void initState() {
+    focusNode = FocusNode();
+    controller = TextEditingController();
+
     focusNode.addListener(() {
-      setState(() {
-        if (focusNode.hasFocus) {
-          focused = true;
-        } else {
-          focused = false;
-        }
-      });
+      // if (focusNode.hasFocus) {
+      //   focused = true;
+      // } else {
+      //   focused = false;
+      // }
+      print(focusNode.hasFocus);
+      // focused = focusNode.hasFocus;
     });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    focusNode.dispose();
   }
 
   @override
   Widget build(BuildContext context) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          AnimatedContainer(
-            duration: const Duration(microseconds: 200),
-            key: Key(focused.toString()),
-            height: 40,
-            decoration: BoxDecoration(
-              border: widget.isError
-                  ? Border.all(color: AppTheme.red, width: 2)
-                  : focused
-                      ? Border.all(
-                          width: 2,
-                          color: AppTheme.accent,
-                        )
-                      : Border.all(
-                          width: 1,
-                          color: AppTheme.lightGrey,
-                        ),
-              borderRadius: BorderRadius.circular(40),
-            ),
-            child: CupertinoTextField(
-              focusNode: focusNode,
-              controller: widget.controller,
-              obscureText: widget.obscure,
-              onTap: () {},
-              onChanged: widget.onChanged,
-              decoration: BoxDecoration(
-                color: Colors.transparent,
+          TextField(
+            decoration: InputDecoration(
+              focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(40),
+                borderSide: BorderSide(
+                  color: widget.isError ? AppTheme.red : AppTheme.accent,
+                  width: 2,
+                ),
               ),
-              style: Theme.of(context).textTheme.bodyText1,
-              textAlign: TextAlign.center,
-              placeholder: widget.hint,
-              placeholderStyle: const TextStyle(
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(40),
+                borderSide: BorderSide(
+                  color: widget.isError ? AppTheme.red : AppTheme.lightGrey,
+                  width: widget.isError ? 2 : 1,
+                ),
+              ),
+              contentPadding:
+                  const EdgeInsets.symmetric(vertical: 4, horizontal: 20),
+              hintText: widget.hint,
+              hintStyle: const TextStyle(
                 color: AppTheme.lightGrey,
                 fontSize: 14,
               ),
             ),
+            onChanged: widget.onChanged,
+            style: Theme.of(context).textTheme.bodyText1,
+            textAlign: TextAlign.center,
+            obscureText: widget.obscure,
           ),
-          if (widget.isError)
+          if (widget.isError && widget.error.isNotEmpty)
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -97,7 +100,7 @@ class _InputFieldComponentState extends State<InputFieldComponent> {
                     ),
                     Text(
                       widget.error,
-                      style: TextStyle(color: AppTheme.red, fontSize: 12),
+                      style: const TextStyle(color: AppTheme.red, fontSize: 12),
                     ),
                   ],
                 ),
