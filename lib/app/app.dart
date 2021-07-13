@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:kanban/app/utils/router.dart' as router;
 import 'package:kanban/app/utils/remove_glow.dart';
+import 'package:kanban/core/theme.dart';
 
 class App extends StatelessWidget {
   const App({
@@ -46,5 +47,6 @@ class _MyAppState extends State<MyApp> {
         debugShowCheckedModeBanner: false,
         initialRoute: '/',
         onGenerateRoute: router.generateRoute,
+        theme: AppTheme.darkTheme(),
       );
 }
