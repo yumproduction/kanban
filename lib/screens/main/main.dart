@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:kanban/app/app.dart';
 import 'package:kanban/core/theme.dart';
+import 'package:kanban/repositories/data/service_locator.dart';
+import 'package:kanban/repositories/main/tasks.dart';
 import 'package:kanban/screens/login/bloc/logout/logout_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanban/screens/login/usecases/login_usecase.dart';
+import 'package:kanban/screens/main/bloc/main_bloc.dart';
+import 'package:kanban/screens/main/widgets/task.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -37,12 +41,8 @@ class _MainScreenState extends State<MainScreen>
   }
 
   @override
-  Widget build(BuildContext context) => MultiBlocProvider(
-        providers: [
-          BlocProvider<LogoutBloc>(
-            create: (_) => LogoutBloc(context.read<AuthUseCaseImpl>()),
-          ),
-        ],
+  Widget build(BuildContext context) => BlocProvider(
+        create: (_) => LogoutBloc(context.read<AuthUseCaseImpl>()),
         child: Scaffold(
           appBar: AppBar(
             actions: [
@@ -93,12 +93,54 @@ class _MainScreenState extends State<MainScreen>
               Expanded(
                 child: TabBarView(
                   controller: tabController,
-                  children: [
-                    Container(),
-                    Container(),
-                    Container(),
-                    Container(),
-                  ],
+                  children: List.generate(
+                    tabController.length,
+                    (index) => BlocProvider(
+                      create: (_) => MainBloc(
+                          TasksRepository(context.read<DioSettings>()), index),
+                      child: BlocBuilder<MainBloc, MainState>(
+                        builder: (context, state) {
+                          Widget child = const SizedBox();
+                          var key = const Key('Loading');
+                          if (state is InitialMainState) {
+                            context
+                                .watch<MainBloc>()
+                                .add(const MainEvent.onLoadTasks());
+                          } else if (state is LoadingMainState) {
+                            child = const Center(
+                                child: CircularProgressIndicator());
+                          } else if (state is SuccessState) {
+                            child = SingleChildScrollView(
+                              padding: const EdgeInsets.all(16),
+                              child: Column(
+                                children: List.generate(
+                                  state.generalInfo.tasks.length,
+                                  (i) => Column(
+                                    children: [
+                                      SizedBox(
+                                        height: i == 0 ? 0 : 16,
+                                      ),
+                                      TaskCard(task: state.generalInfo.tasks[i])
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                            key = const Key('Loaded');
+                          }
+                          return AnimatedSizeAndFade(
+                            vsync: this,
+                            child: Container(
+                              alignment: Alignment.topCenter,
+                              key: key,
+                              width: double.infinity,
+                              child: child,
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
                 ),
               ),
             ],
