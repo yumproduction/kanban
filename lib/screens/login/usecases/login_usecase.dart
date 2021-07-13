@@ -47,10 +47,13 @@ class AuthUseCaseImpl implements AuthUseCase<String, LoginParams> {
             Left(TokenExpiredFailure(err.errorMessage, err.statusCode ?? 0)),
         (token) async {
       final check = await repository.checkToken(token);
-      return check.fold(
-          (err) =>
-              Left(TokenExpiredFailure(err.errorMessage, err.statusCode ?? 0)),
-          (valid) => Right(token));
+      return check.fold((err) async {
+        final refresh = await repository.refreshToken(token);
+        return refresh.fold(
+            (err) => Left(
+                TokenExpiredFailure(err.errorMessage, err.statusCode ?? 0)),
+            (newToken) => Right(newToken));
+      }, (valid) => Right(token));
     });
   }
 

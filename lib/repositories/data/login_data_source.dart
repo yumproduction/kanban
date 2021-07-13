@@ -7,6 +7,7 @@ abstract class AuthDataSource {
   Future<TokenUserParams> getLogin(
       {required String username, required String password});
   Future<bool> checkToken({required String token});
+  Future<String> refreshToken({required String token});
 }
 
 class AuthDataSourceImpl implements AuthDataSource {
@@ -39,6 +40,30 @@ class AuthDataSourceImpl implements AuthDataSource {
     } else {
       throw ServerErrorException(
           'login_pass_error', response.statusCode ?? 400);
+    }
+  }
+
+  @override
+  Future<String> refreshToken({required String token}) async {
+    final response = await _dioSettings.dio.post<dynamic>(
+      '/refresh/',
+      data: FormData.fromMap(
+        {'token': token},
+      ),
+    );
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      final newToken = response.data['token'] as String;
+      _dioSettings.setBaseOptions(token: newToken);
+
+      return newToken;
+    } else if (response.statusCode! >= 400 && response.statusCode! < 500) {
+      throw TokenExpiredException(
+          response.data['non_field_errors'][0].toString(),
+          response.statusCode ?? 400);
+    } else {
+      throw ServerErrorException(
+          response.data['non_field_errors'][0].toString(),
+          response.statusCode ?? 400);
     }
   }
 

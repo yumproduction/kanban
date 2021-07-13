@@ -8,5 +8,6 @@ abstract class LoginRepository {
       {required String username, required String password});
   Future<Either<Failure, bool>> checkToken(String token);
   Future<Either<Failure, String>> getToken();
+  Future<Either<Failure, String>> refreshToken(String token);
   Future<bool> logout();
 }
