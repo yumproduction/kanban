@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 
 abstract class AppTheme {
   static ThemeData darkTheme() => ThemeData(
-        appBarTheme: const AppBarTheme(color: grey),
+        appBarTheme:
+            AppBarTheme(color: grey, shadowColor: Colors.white.withOpacity(0)),
         cupertinoOverrideTheme: const CupertinoThemeData(primaryColor: black),
         scaffoldBackgroundColor: black,
         accentColor: accent,

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kanban/screens/login/login.dart';
+import 'package:kanban/screens/main/main.dart';
 
 Route createRoute2(Widget? screen, {int? value, String? routeName}) =>
     PageRouteBuilder<Widget>(
@@ -32,7 +33,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {
     case '/':
       return MaterialPageRoute<dynamic>(
-        builder: (context) => LoginScreen(),
+        builder: (context) => MainScreen(),
       );
       break;
     // case balanceFillRoute:
@@ -41,7 +42,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     //   );
     default:
       return MaterialPageRoute<dynamic>(
-        builder: (context) => LoginScreen(),
+        builder: (context) => MainScreen(),
       );
   }
 }
