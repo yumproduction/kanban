@@ -1,10 +1,8 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:formz/formz.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:kanban/core/entities/main_content/main_content.dart';
-import 'package:kanban/core/entities/task/task.dart';
 import 'package:kanban/repositories/main/tasks.dart';
 
 part 'main_bloc.freezed.dart';
@@ -13,7 +11,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
   MainBloc(TasksRepository catalogRepository)
       : _tasksRepository = catalogRepository,
         super(
-          MainState.initial(
+          const MainState.initial(
             MainContent(),
           ),
         );

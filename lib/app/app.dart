@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kanban/app/language/language_bloc.dart';
 
 import 'package:kanban/app/utils/router.dart' as router;
 import 'package:kanban/app/utils/remove_glow.dart';
@@ -17,6 +18,7 @@ import 'package:kanban/screens/login/bloc/auth/auth_bloc.dart';
 import 'package:kanban/screens/login/login.dart';
 import 'package:kanban/screens/login/usecases/login_usecase.dart';
 import 'package:kanban/screens/main/main.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class App extends StatelessWidget {
   const App({
@@ -61,6 +63,12 @@ class App extends StatelessWidget {
                   //  userRepository: userRepository
                 )..add(AuthUser()),
               ),
+              BlocProvider<LanguageBloc>(
+                create: (_) => LanguageBloc(dataSource)
+                  ..add(
+                    const InitLanguage(),
+                  ),
+              ),
             ],
             child: MyApp(),
           ),
@@ -85,55 +93,64 @@ class _MyAppState extends State<MyApp> {
   }
 
   @override
-  Widget build(BuildContext context) => MaterialApp(
-        navigatorKey: _navigatorKey,
-        builder: (context, child) => MediaQuery(
-          data: MediaQuery.of(context).copyWith(textScaleFactor: 1),
-          child: ScrollConfiguration(
-            behavior: MyBehavior(),
-            child: BlocListener<AuthenticationBloc, AuthenticationState>(
-              listener: (context, state) {
-                switch (state.status) {
-                  case AuthenticationStatus.authenticated:
-                    _navigator!.pushAndRemoveUntil<void>(
-                      MainScreen.route(),
-                      (route) => false,
-                    );
-                    break;
-                  case AuthenticationStatus.logedOut:
-                    _navigator!.pushAndRemoveUntil<void>(
-                      LoginScreen.route(),
-                      (route) => false,
-                    );
-                    break;
-                  case AuthenticationStatus.unknown:
-                    // TODO: Handle this case.
+  Widget build(BuildContext context) =>
+      BlocListener<LanguageBloc, LanguageState>(
+        listener: (context, state) {
+          context.setLocale(state.locale);
+        },
+        child: MaterialApp(
+          localizationsDelegates: context.localizationDelegates,
+          supportedLocales: context.supportedLocales,
+          locale: context.locale,
+          navigatorKey: _navigatorKey,
+          builder: (context, child) => MediaQuery(
+            data: MediaQuery.of(context).copyWith(textScaleFactor: 1),
+            child: ScrollConfiguration(
+              behavior: MyBehavior(),
+              child: BlocListener<AuthenticationBloc, AuthenticationState>(
+                listener: (context, state) {
+                  switch (state.status) {
+                    case AuthenticationStatus.authenticated:
+                      _navigator!.pushAndRemoveUntil<void>(
+                        MainScreen.route(),
+                        (route) => false,
+                      );
+                      break;
+                    case AuthenticationStatus.logedOut:
+                      _navigator!.pushAndRemoveUntil<void>(
+                        LoginScreen.route(),
+                        (route) => false,
+                      );
+                      break;
+                    case AuthenticationStatus.unknown:
+                      // TODO: Handle this case.
 
-                    break;
-                  case AuthenticationStatus.unauthenticated:
-                    // TODO: Handle this case.
+                      break;
+                    case AuthenticationStatus.unauthenticated:
+                      // TODO: Handle this case.
 
-                    break;
-                  case AuthenticationStatus.firstTime:
-                    // TODO: Handle this case.
+                      break;
+                    case AuthenticationStatus.firstTime:
+                      // TODO: Handle this case.
 
-                    break;
-                  case AuthenticationStatus.notVerified:
-                    // TODO: Handle this case.
-                    break;
-                  case AuthenticationStatus.connectionError:
-                    // TODO: Handle this case.
-                    break;
-                }
-              },
-              child: child,
+                      break;
+                    case AuthenticationStatus.notVerified:
+                      // TODO: Handle this case.
+                      break;
+                    case AuthenticationStatus.connectionError:
+                      // TODO: Handle this case.
+                      break;
+                  }
+                },
+                child: child,
+              ),
             ),
           ),
+          title: 'Kanban',
+          debugShowCheckedModeBanner: false,
+          initialRoute: '/',
+          onGenerateRoute: router.generateRoute,
+          theme: AppTheme.darkTheme(),
         ),
-        title: 'Kanban',
-        debugShowCheckedModeBanner: false,
-        initialRoute: '/',
-        onGenerateRoute: router.generateRoute,
-        theme: AppTheme.darkTheme(),
       );
 }

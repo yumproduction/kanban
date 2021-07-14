@@ -1,0 +1,11 @@
+{
+  "enter_user": "Enter username",
+  "enter_password": "Enter password",
+  "log_in": "Log in",
+  "on_hold": "On hold",
+  "in_progress": "In progress",
+  "needs_review": "Needs review",
+  "approved": "Approved",
+  "min_login_chars": "Minimum 4 characters",
+  "min_pass_chars": "Minimum 8 characters"
+}

@@ -1,0 +1,11 @@
+{
+  "enter_user": "Введите логин",
+  "enter_password": "Введите пароль",
+  "log_in": "Войти",
+  "on_hold": "В ожидании",
+  "in_progress": "В процессе",
+  "needs_review": "На рассмотрении",
+  "approved": "Завершённые",
+  "min_login_chars": "Минимум 4 символа",
+  "min_pass_chars": "Минимум 8 символов"
+}
