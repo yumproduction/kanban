@@ -10,11 +10,11 @@ import 'package:kanban/repositories/main/tasks.dart';
 part 'main_bloc.freezed.dart';
 
 class MainBloc extends Bloc<MainEvent, MainState> {
-  MainBloc(TasksRepository catalogRepository, int row)
+  MainBloc(TasksRepository catalogRepository)
       : _tasksRepository = catalogRepository,
         super(
           MainState.initial(
-            MainContent(row: row),
+            MainContent(),
           ),
         );
   final TasksRepository _tasksRepository;
@@ -25,13 +25,23 @@ class MainBloc extends Bloc<MainEvent, MainState> {
       );
 
   Stream<MainState> _onLoadTasks(MainState state) async* {
-    final taks = List<TaskEntity>.empty(growable: true);
-    final result = await _tasksRepository.getTaks(state.generalInfo.row);
+    final result = await _tasksRepository.getTaks();
 
     yield result.fold(
       (err) => MainState.onFailure(
           state.generalInfo.copyWith(err: err.errorMessage)),
-      (value) => MainState.onSuccess(state.generalInfo.copyWith(tasks: value)),
+      (value) => MainState.onSuccess(
+        state.generalInfo.copyWith(
+          onHoldTasks:
+              value.where((element) => int.parse(element.row) == 0).toList(),
+          inProgressTasks:
+              value.where((element) => int.parse(element.row) == 1).toList(),
+          needsReviewTasks:
+              value.where((element) => int.parse(element.row) == 2).toList(),
+          approvedTasks:
+              value.where((element) => int.parse(element.row) == 3).toList(),
+        ),
+      ),
     );
   }
 }

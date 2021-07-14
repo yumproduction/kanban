@@ -8,9 +8,20 @@ part of 'main_content.dart';
 
 _$_MainContent _$_$_MainContentFromJson(Map<String, dynamic> json) {
   return _$_MainContent(
-    row: json['row'] as int,
     err: json['err'] as String? ?? '',
-    tasks: (json['tasks'] as List<dynamic>?)
+    onHoldTasks: (json['onHoldTasks'] as List<dynamic>?)
+            ?.map((e) => TaskEntity.fromJson(e as Map<String, dynamic>))
+            .toList() ??
+        [],
+    inProgressTasks: (json['inProgressTasks'] as List<dynamic>?)
+            ?.map((e) => TaskEntity.fromJson(e as Map<String, dynamic>))
+            .toList() ??
+        [],
+    needsReviewTasks: (json['needsReviewTasks'] as List<dynamic>?)
+            ?.map((e) => TaskEntity.fromJson(e as Map<String, dynamic>))
+            .toList() ??
+        [],
+    approvedTasks: (json['approvedTasks'] as List<dynamic>?)
             ?.map((e) => TaskEntity.fromJson(e as Map<String, dynamic>))
             .toList() ??
         [],
@@ -19,7 +30,9 @@ _$_MainContent _$_$_MainContentFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$_$_MainContentToJson(_$_MainContent instance) =>
     <String, dynamic>{
-      'row': instance.row,
       'err': instance.err,
-      'tasks': instance.tasks,
+      'onHoldTasks': instance.onHoldTasks,
+      'inProgressTasks': instance.inProgressTasks,
+      'needsReviewTasks': instance.needsReviewTasks,
+      'approvedTasks': instance.approvedTasks,
     };

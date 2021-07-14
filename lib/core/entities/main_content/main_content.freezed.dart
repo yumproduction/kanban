@@ -21,13 +21,17 @@ class _$MainContentTearOff {
   const _$MainContentTearOff();
 
   _MainContent call(
-      {required int row,
-      String err = '',
-      List<TaskEntity> tasks = const <TaskEntity>[]}) {
+      {String err = '',
+      List<TaskEntity> onHoldTasks = const <TaskEntity>[],
+      List<TaskEntity> inProgressTasks = const <TaskEntity>[],
+      List<TaskEntity> needsReviewTasks = const <TaskEntity>[],
+      List<TaskEntity> approvedTasks = const <TaskEntity>[]}) {
     return _MainContent(
-      row: row,
       err: err,
-      tasks: tasks,
+      onHoldTasks: onHoldTasks,
+      inProgressTasks: inProgressTasks,
+      needsReviewTasks: needsReviewTasks,
+      approvedTasks: approvedTasks,
     );
   }
 
@@ -41,9 +45,11 @@ const $MainContent = _$MainContentTearOff();
 
 /// @nodoc
 mixin _$MainContent {
-  int get row => throw _privateConstructorUsedError;
   String get err => throw _privateConstructorUsedError;
-  List<TaskEntity> get tasks => throw _privateConstructorUsedError;
+  List<TaskEntity> get onHoldTasks => throw _privateConstructorUsedError;
+  List<TaskEntity> get inProgressTasks => throw _privateConstructorUsedError;
+  List<TaskEntity> get needsReviewTasks => throw _privateConstructorUsedError;
+  List<TaskEntity> get approvedTasks => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -56,7 +62,12 @@ abstract class $MainContentCopyWith<$Res> {
   factory $MainContentCopyWith(
           MainContent value, $Res Function(MainContent) then) =
       _$MainContentCopyWithImpl<$Res>;
-  $Res call({int row, String err, List<TaskEntity> tasks});
+  $Res call(
+      {String err,
+      List<TaskEntity> onHoldTasks,
+      List<TaskEntity> inProgressTasks,
+      List<TaskEntity> needsReviewTasks,
+      List<TaskEntity> approvedTasks});
 }
 
 /// @nodoc
@@ -69,22 +80,32 @@ class _$MainContentCopyWithImpl<$Res> implements $MainContentCopyWith<$Res> {
 
   @override
   $Res call({
-    Object? row = freezed,
     Object? err = freezed,
-    Object? tasks = freezed,
+    Object? onHoldTasks = freezed,
+    Object? inProgressTasks = freezed,
+    Object? needsReviewTasks = freezed,
+    Object? approvedTasks = freezed,
   }) {
     return _then(_value.copyWith(
-      row: row == freezed
-          ? _value.row
-          : row // ignore: cast_nullable_to_non_nullable
-              as int,
       err: err == freezed
           ? _value.err
           : err // ignore: cast_nullable_to_non_nullable
               as String,
-      tasks: tasks == freezed
-          ? _value.tasks
-          : tasks // ignore: cast_nullable_to_non_nullable
+      onHoldTasks: onHoldTasks == freezed
+          ? _value.onHoldTasks
+          : onHoldTasks // ignore: cast_nullable_to_non_nullable
+              as List<TaskEntity>,
+      inProgressTasks: inProgressTasks == freezed
+          ? _value.inProgressTasks
+          : inProgressTasks // ignore: cast_nullable_to_non_nullable
+              as List<TaskEntity>,
+      needsReviewTasks: needsReviewTasks == freezed
+          ? _value.needsReviewTasks
+          : needsReviewTasks // ignore: cast_nullable_to_non_nullable
+              as List<TaskEntity>,
+      approvedTasks: approvedTasks == freezed
+          ? _value.approvedTasks
+          : approvedTasks // ignore: cast_nullable_to_non_nullable
               as List<TaskEntity>,
     ));
   }
@@ -97,7 +118,12 @@ abstract class _$MainContentCopyWith<$Res>
           _MainContent value, $Res Function(_MainContent) then) =
       __$MainContentCopyWithImpl<$Res>;
   @override
-  $Res call({int row, String err, List<TaskEntity> tasks});
+  $Res call(
+      {String err,
+      List<TaskEntity> onHoldTasks,
+      List<TaskEntity> inProgressTasks,
+      List<TaskEntity> needsReviewTasks,
+      List<TaskEntity> approvedTasks});
 }
 
 /// @nodoc
@@ -112,22 +138,32 @@ class __$MainContentCopyWithImpl<$Res> extends _$MainContentCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? row = freezed,
     Object? err = freezed,
-    Object? tasks = freezed,
+    Object? onHoldTasks = freezed,
+    Object? inProgressTasks = freezed,
+    Object? needsReviewTasks = freezed,
+    Object? approvedTasks = freezed,
   }) {
     return _then(_MainContent(
-      row: row == freezed
-          ? _value.row
-          : row // ignore: cast_nullable_to_non_nullable
-              as int,
       err: err == freezed
           ? _value.err
           : err // ignore: cast_nullable_to_non_nullable
               as String,
-      tasks: tasks == freezed
-          ? _value.tasks
-          : tasks // ignore: cast_nullable_to_non_nullable
+      onHoldTasks: onHoldTasks == freezed
+          ? _value.onHoldTasks
+          : onHoldTasks // ignore: cast_nullable_to_non_nullable
+              as List<TaskEntity>,
+      inProgressTasks: inProgressTasks == freezed
+          ? _value.inProgressTasks
+          : inProgressTasks // ignore: cast_nullable_to_non_nullable
+              as List<TaskEntity>,
+      needsReviewTasks: needsReviewTasks == freezed
+          ? _value.needsReviewTasks
+          : needsReviewTasks // ignore: cast_nullable_to_non_nullable
+              as List<TaskEntity>,
+      approvedTasks: approvedTasks == freezed
+          ? _value.approvedTasks
+          : approvedTasks // ignore: cast_nullable_to_non_nullable
               as List<TaskEntity>,
     ));
   }
@@ -137,43 +173,64 @@ class __$MainContentCopyWithImpl<$Res> extends _$MainContentCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_MainContent implements _MainContent {
   const _$_MainContent(
-      {required this.row, this.err = '', this.tasks = const <TaskEntity>[]});
+      {this.err = '',
+      this.onHoldTasks = const <TaskEntity>[],
+      this.inProgressTasks = const <TaskEntity>[],
+      this.needsReviewTasks = const <TaskEntity>[],
+      this.approvedTasks = const <TaskEntity>[]});
 
   factory _$_MainContent.fromJson(Map<String, dynamic> json) =>
       _$_$_MainContentFromJson(json);
 
-  @override
-  final int row;
   @JsonKey(defaultValue: '')
   @override
   final String err;
   @JsonKey(defaultValue: const <TaskEntity>[])
   @override
-  final List<TaskEntity> tasks;
+  final List<TaskEntity> onHoldTasks;
+  @JsonKey(defaultValue: const <TaskEntity>[])
+  @override
+  final List<TaskEntity> inProgressTasks;
+  @JsonKey(defaultValue: const <TaskEntity>[])
+  @override
+  final List<TaskEntity> needsReviewTasks;
+  @JsonKey(defaultValue: const <TaskEntity>[])
+  @override
+  final List<TaskEntity> approvedTasks;
 
   @override
   String toString() {
-    return 'MainContent(row: $row, err: $err, tasks: $tasks)';
+    return 'MainContent(err: $err, onHoldTasks: $onHoldTasks, inProgressTasks: $inProgressTasks, needsReviewTasks: $needsReviewTasks, approvedTasks: $approvedTasks)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is _MainContent &&
-            (identical(other.row, row) ||
-                const DeepCollectionEquality().equals(other.row, row)) &&
             (identical(other.err, err) ||
                 const DeepCollectionEquality().equals(other.err, err)) &&
-            (identical(other.tasks, tasks) ||
-                const DeepCollectionEquality().equals(other.tasks, tasks)));
+            (identical(other.onHoldTasks, onHoldTasks) ||
+                const DeepCollectionEquality()
+                    .equals(other.onHoldTasks, onHoldTasks)) &&
+            (identical(other.inProgressTasks, inProgressTasks) ||
+                const DeepCollectionEquality()
+                    .equals(other.inProgressTasks, inProgressTasks)) &&
+            (identical(other.needsReviewTasks, needsReviewTasks) ||
+                const DeepCollectionEquality()
+                    .equals(other.needsReviewTasks, needsReviewTasks)) &&
+            (identical(other.approvedTasks, approvedTasks) ||
+                const DeepCollectionEquality()
+                    .equals(other.approvedTasks, approvedTasks)));
   }
 
   @override
   int get hashCode =>
       runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(row) ^
       const DeepCollectionEquality().hash(err) ^
-      const DeepCollectionEquality().hash(tasks);
+      const DeepCollectionEquality().hash(onHoldTasks) ^
+      const DeepCollectionEquality().hash(inProgressTasks) ^
+      const DeepCollectionEquality().hash(needsReviewTasks) ^
+      const DeepCollectionEquality().hash(approvedTasks);
 
   @JsonKey(ignore: true)
   @override
@@ -188,17 +245,25 @@ class _$_MainContent implements _MainContent {
 
 abstract class _MainContent implements MainContent {
   const factory _MainContent(
-      {required int row, String err, List<TaskEntity> tasks}) = _$_MainContent;
+      {String err,
+      List<TaskEntity> onHoldTasks,
+      List<TaskEntity> inProgressTasks,
+      List<TaskEntity> needsReviewTasks,
+      List<TaskEntity> approvedTasks}) = _$_MainContent;
 
   factory _MainContent.fromJson(Map<String, dynamic> json) =
       _$_MainContent.fromJson;
 
   @override
-  int get row => throw _privateConstructorUsedError;
-  @override
   String get err => throw _privateConstructorUsedError;
   @override
-  List<TaskEntity> get tasks => throw _privateConstructorUsedError;
+  List<TaskEntity> get onHoldTasks => throw _privateConstructorUsedError;
+  @override
+  List<TaskEntity> get inProgressTasks => throw _privateConstructorUsedError;
+  @override
+  List<TaskEntity> get needsReviewTasks => throw _privateConstructorUsedError;
+  @override
+  List<TaskEntity> get approvedTasks => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$MainContentCopyWith<_MainContent> get copyWith =>

@@ -25,34 +25,6 @@ class InputFieldComponent extends StatefulWidget {
 }
 
 class _InputFieldComponentState extends State<InputFieldComponent> {
-  late FocusNode focusNode;
-  late TextEditingController controller;
-  bool focused = false;
-
-  @override
-  void initState() {
-    focusNode = FocusNode();
-    controller = TextEditingController();
-
-    focusNode.addListener(() {
-      // if (focusNode.hasFocus) {
-      //   focused = true;
-      // } else {
-      //   focused = false;
-      // }
-      print(focusNode.hasFocus);
-      // focused = focusNode.hasFocus;
-    });
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-    focusNode.dispose();
-  }
-
   @override
   Widget build(BuildContext context) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,

@@ -59,6 +59,20 @@ class LoginRepositoryImpl extends LoginRepository {
   }
 
   @override
+  Future<Either<Failure, String>> refreshToken(String token) async {
+    try {
+      final result = await authDataSource.refreshToken(token: token);
+      return Right(result);
+    } on TokenExpiredException catch (e) {
+      return Left(TokenExpiredFailure(e.err, e.code));
+    } on ServerErrorException catch (e) {
+      return Left(ServerFailure(e.err, e.code));
+    } catch (e) {
+      return Left(const ServerFailure('something_went_wrong', 0));
+    }
+  }
+
+  @override
   Future<Either<Failure, String>> getToken() async =>
       sharedprefDataSource.read('token');
 }

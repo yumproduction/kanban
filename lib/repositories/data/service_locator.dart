@@ -34,7 +34,7 @@ class DioSettings {
         receiveTimeout: 33000,
         followRedirects: false,
         headers: <String, dynamic>{
-          'Authorization': 'Bearer ${token ?? this.token}'
+          'Authorization': 'JWT ${token ?? this.token}'
         },
         validateStatus: (status) => status! <= 500,
       );

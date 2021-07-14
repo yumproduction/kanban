@@ -1,3 +1,4 @@
+import 'package:animated_size_and_fade/animated_size_and_fade.dart';
 import 'package:flutter/material.dart';
 import 'package:kanban/app/app.dart';
 import 'package:kanban/core/theme.dart';
@@ -8,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanban/screens/login/usecases/login_usecase.dart';
 import 'package:kanban/screens/main/bloc/main_bloc.dart';
 import 'package:kanban/screens/main/widgets/task.dart';
+import 'package:kanban/screens/main/widgets/task_list.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -19,8 +21,7 @@ class MainScreen extends StatefulWidget {
   _MainScreenState createState() => _MainScreenState();
 }
 
-class _MainScreenState extends State<MainScreen>
-    with SingleTickerProviderStateMixin {
+class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   late TabController tabController;
 
   @override
@@ -91,55 +92,44 @@ class _MainScreenState extends State<MainScreen>
                 ),
               ),
               Expanded(
-                child: TabBarView(
-                  controller: tabController,
-                  children: List.generate(
-                    tabController.length,
-                    (index) => BlocProvider(
-                      create: (_) => MainBloc(
-                          TasksRepository(context.read<DioSettings>()), index),
-                      child: BlocBuilder<MainBloc, MainState>(
-                        builder: (context, state) {
-                          Widget child = const SizedBox();
-                          var key = const Key('Loading');
-                          if (state is InitialMainState) {
-                            context
-                                .watch<MainBloc>()
-                                .add(const MainEvent.onLoadTasks());
-                          } else if (state is LoadingMainState) {
-                            child = const Center(
-                                child: CircularProgressIndicator());
-                          } else if (state is SuccessState) {
-                            child = SingleChildScrollView(
-                              padding: const EdgeInsets.all(16),
-                              child: Column(
-                                children: List.generate(
-                                  state.generalInfo.tasks.length,
-                                  (i) => Column(
-                                    children: [
-                                      SizedBox(
-                                        height: i == 0 ? 0 : 16,
-                                      ),
-                                      TaskCard(task: state.generalInfo.tasks[i])
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            );
-                            key = const Key('Loaded');
-                          }
-                          return AnimatedSizeAndFade(
-                            vsync: this,
-                            child: Container(
-                              alignment: Alignment.topCenter,
-                              key: key,
-                              width: double.infinity,
-                              child: child,
+                child: BlocProvider(
+                  create: (_) =>
+                      MainBloc(TasksRepository(context.read<DioSettings>())),
+                  child: BlocBuilder<MainBloc, MainState>(
+                    builder: (context, state) {
+                      Widget child = const SizedBox();
+                      var key = const Key('Loading');
+                      if (state is InitialMainState) {
+                        context
+                            .watch<MainBloc>()
+                            .add(const MainEvent.onLoadTasks());
+                      } else if (state is LoadingMainState) {
+                        child =
+                            const Center(child: CircularProgressIndicator());
+                      } else if (state is SuccessState) {
+                        child = TabBarView(
+                          controller: tabController,
+                          children: [
+                            TaskList(tasks: state.generalInfo.onHoldTasks),
+                            TaskList(tasks: state.generalInfo.inProgressTasks),
+                            TaskList(
+                              tasks: state.generalInfo.needsReviewTasks,
                             ),
-                          );
-                        },
-                      ),
-                    ),
+                            TaskList(tasks: state.generalInfo.approvedTasks),
+                          ],
+                        );
+                        key = const Key('Loaded');
+                      }
+                      return AnimatedSizeAndFade(
+                        vsync: this,
+                        child: Container(
+                          alignment: Alignment.topCenter,
+                          key: key,
+                          width: double.infinity,
+                          child: child,
+                        ),
+                      );
+                    },
                   ),
                 ),
               ),

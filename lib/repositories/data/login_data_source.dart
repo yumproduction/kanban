@@ -46,11 +46,14 @@ class AuthDataSourceImpl implements AuthDataSource {
   @override
   Future<String> refreshToken({required String token}) async {
     final response = await _dioSettings.dio.post<dynamic>(
-      '/refresh/',
+      '/users/refresh_token/',
       data: FormData.fromMap(
-        {'token': token},
+        {
+          'token': token,
+        },
       ),
     );
+    print(response);
     if (response.statusCode == 200 || response.statusCode == 201) {
       final newToken = response.data['token'] as String;
       _dioSettings.setBaseOptions(token: newToken);

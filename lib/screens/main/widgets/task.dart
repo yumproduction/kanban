@@ -8,6 +8,7 @@ class TaskCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
+        width: double.infinity,
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
