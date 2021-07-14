@@ -53,7 +53,6 @@ class AuthDataSourceImpl implements AuthDataSource {
         },
       ),
     );
-    print(response);
     if (response.statusCode == 200 || response.statusCode == 201) {
       final newToken = response.data['token'] as String;
       _dioSettings.setBaseOptions(token: newToken);
@@ -72,15 +71,15 @@ class AuthDataSourceImpl implements AuthDataSource {
 
   @override
   Future<bool> checkToken({required String token}) async {
-    print(token);
     final response = await _dioSettings.dio.get<dynamic>(
       '/cards/',
       options: Options(
-        headers: <String, dynamic>{'Authorization': 'Bearer $token'},
+        headers: <String, dynamic>{'Authorization': 'JWT $token'},
       ),
     );
-    print(response);
     if (response.statusCode == 200 || response.statusCode == 201) {
+      _dioSettings.setBaseOptions(token: token);
+
       return true;
     } else if (response.statusCode! >= 400 && response.statusCode! < 500) {
       throw TokenExpiredException(

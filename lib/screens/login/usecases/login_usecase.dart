@@ -41,7 +41,6 @@ class AuthUseCaseImpl implements AuthUseCase<String, LoginParams> {
   @override
   Future<Either<Failure, String>> localLogin() async {
     final token = await repository.getToken();
-    print(token);
     return token.fold(
         (err) =>
             Left(TokenExpiredFailure(err.errorMessage, err.statusCode ?? 0)),
@@ -62,7 +61,7 @@ class AuthUseCaseImpl implements AuthUseCase<String, LoginParams> {
     final result = await repository.logout();
     if (result) {
       authenticationRepository
-          .changeStatus(const AuthenticationState.unauthenticated());
+          .changeStatus(const AuthenticationState.logedOut());
       return true;
     } else {
       return false;

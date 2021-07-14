@@ -20,7 +20,6 @@ class LoginRepositoryImpl extends LoginRepository {
     try {
       final data =
           await authDataSource.getLogin(username: username, password: password);
-      print(data.token);
       await sharedprefDataSource.write('token', data.token);
 
       return Right(data.token);

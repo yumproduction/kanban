@@ -43,26 +43,28 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) => BlocProvider(
-        create: (_) => LogoutBloc(context.read<AuthUseCaseImpl>()),
+        create: (context) => LogoutBloc(context.read<AuthUseCaseImpl>()),
         child: Scaffold(
           appBar: AppBar(
             actions: [
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  onTap: () {
-                    context.read<LogoutBloc>().add(const OnLogout());
-                    // Navigator.of(context).pop();
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: AppTheme.accent,
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(4),
-                      child: Icon(Icons.arrow_back),
+                child: BlocBuilder<LogoutBloc, LogoutState>(
+                  builder: (context, state) => GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: () {
+                      context.read<LogoutBloc>().add(const OnLogout());
+                      Navigator.of(context).pop();
+                    },
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: AppTheme.accent,
+                      ),
+                      child: const Padding(
+                        padding: EdgeInsets.all(4),
+                        child: Icon(Icons.arrow_back),
+                      ),
                     ),
                   ),
                 ),
@@ -75,7 +77,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                 color: AppTheme.grey,
                 child: TabBar(
                   controller: tabController,
-                  tabs: [
+                  tabs: const [
                     Tab(
                       text: 'On hold',
                     ),

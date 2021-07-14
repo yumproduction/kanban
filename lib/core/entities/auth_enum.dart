@@ -5,4 +5,5 @@ enum AuthenticationStatus {
   firstTime,
   notVerified,
   connectionError,
+  logedOut,
 }

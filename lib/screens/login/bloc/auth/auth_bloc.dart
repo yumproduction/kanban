@@ -61,6 +61,9 @@ class AuthenticationBloc
       case AuthenticationStatus.firstTime:
         yield const AuthenticationState.firstTime();
         break;
+      case AuthenticationStatus.logedOut:
+        yield const AuthenticationState.logedOut();
+        break;
       default:
         yield const AuthenticationState.unknown();
     }

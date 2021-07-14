@@ -100,23 +100,23 @@ class _MyAppState extends State<MyApp> {
                       (route) => false,
                     );
                     break;
+                  case AuthenticationStatus.logedOut:
+                    _navigator!.pushAndRemoveUntil<void>(
+                      LoginScreen.route(),
+                      (route) => false,
+                    );
+                    break;
                   case AuthenticationStatus.unknown:
-                    // _navigator!.pushAndRemoveUntil<void>(
-                    //   LoginScreen.route(),
-                    //   (route) => false,
-                    // );
+                    // TODO: Handle this case.
+
                     break;
                   case AuthenticationStatus.unauthenticated:
-                    // _navigator!.pushAndRemoveUntil<void>(
-                    //   LoginScreen.route(),
-                    //   (route) => false,
-                    // );
+                    // TODO: Handle this case.
+
                     break;
                   case AuthenticationStatus.firstTime:
-                    // _navigator!.pushAndRemoveUntil<void>(
-                    //   LoginScreen.route(),
-                    //   (route) => false,
-                    // );
+                    // TODO: Handle this case.
+
                     break;
                   case AuthenticationStatus.notVerified:
                     // TODO: Handle this case.
