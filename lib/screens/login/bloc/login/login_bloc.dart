@@ -96,6 +96,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         ),
         (result) => state.copyWith(),
       );
+      yield state.copyWith();
     }
   }
 }
